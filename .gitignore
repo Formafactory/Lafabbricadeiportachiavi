@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+.dev.vars
+.wrangler
+*.local
+# Bun non è il package manager del progetto: npm + package-lock.json.
+# Cloudflare Pages sceglie bun se trova questi file, poi la build fallisce.
+bun.lock
+bun.lockb
