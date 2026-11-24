@@ -5,6 +5,9 @@ import {
   type ModelloId, type Quantita,
 } from "../shared/config.ts";
 import { Illustrazione } from "./illustrations.tsx";
+import fotoClicker from "./assets/portachiavi-clicker.webp";
+import fotoNfc from "./assets/portachiavi-nfc.webp";
+import fotoMazzo from "./assets/portachiavi-mazzo-chiavi.webp";
 
 const FRECCIA = (
   <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
@@ -13,10 +16,11 @@ const FRECCIA = (
   </svg>
 );
 
-const FOTO = [
-  "[FOTO: portachiavi con logo, in mano]",
-  "[FOTO: tanti portachiavi appena stampati]",
-  "[FOTO: portachiavi attaccato a un mazzo di chiavi]",
+// Le foto sono 900x600 (3:2). Una voce senza `src` resta un segnaposto tratteggiato.
+const FOTO: { testo: string; src?: string; alt?: string }[] = [
+  { testo: "[FOTO: portachiavi con logo, in mano]", src: fotoClicker, alt: "Portachiavi clicker rosa e verde con il logo La Fabbrica dei Portachiavi sul tasto" },
+  { testo: "[FOTO: tanti portachiavi appena stampati]", src: fotoNfc, alt: "Portachiavi tondo con chip NFC, verde e rosa, davanti a uno smartphone" },
+  { testo: "[FOTO: portachiavi attaccato a un mazzo di chiavi]", src: fotoMazzo, alt: "Portachiavi rosa con il logo attaccato a un mazzo di chiavi con telecomando dell'auto" },
 ];
 
 const PASSI = [
@@ -117,9 +121,15 @@ export default function App() {
       </div>
 
       <section className="wrap foto" aria-label="Foto dei portachiavi">
-        {FOTO.map((t) => (
-          <div key={t} className="foto-box">{t}</div>
-        ))}
+        {FOTO.map((f) =>
+          f.src ? (
+            <div key={f.testo} className="foto-box con-foto">
+              <img src={f.src} alt={f.alt ?? ""} width={900} height={600} loading="lazy" decoding="async" />
+            </div>
+          ) : (
+            <div key={f.testo} className="foto-box">{f.testo}</div>
+          ),
+        )}
       </section>
 
       <section className="wrap sezione">
