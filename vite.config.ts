@@ -7,11 +7,14 @@ import { resolve } from "node:path";
 export default defineConfig({
   plugins: [react()],
   build: {
+    // Niente file incorporati nel CSS come data:, la CSP (font-src 'self') li bloccherebbe.
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
         privacy: resolve(__dirname, "privacy.html"),
         cookie: resolve(__dirname, "cookie.html"),
+        notfound: resolve(__dirname, "404.html"),
       },
     },
   },
