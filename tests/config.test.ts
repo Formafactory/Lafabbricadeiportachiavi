@@ -1,12 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  MODELLI, QUANTITA, calcolaRiepilogo, formatEuro, conIva, prezzoDa, trovaModello,
+  MODELLI, QUANTITA, calcolaRiepilogo, formatEuro, prezzoTesto, prezzoDa, trovaModello,
 } from "../shared/config.ts";
 
 const n = (t: string) => t.replace(/\u00A0/g, " "); // spazi non divisibili -> spazi normali
 
-// Listino ufficiale (€ al pezzo, + IVA): [100, 200, 500]
+// Listino ufficiale (€ al pezzo): [100, 200, 500]
 const LISTINO: Record<string, number[]> = {
   sagoma: [1.9, 1.6, 1.3],
   rotante: [2.5, 2.2, 1.9],
@@ -29,7 +29,7 @@ test("spedizione: 6 € a 100 pezzi, inclusa da 200", () => {
   assert.equal(calcolaRiepilogo("sagoma", 500).spedizioneCent, 0);
 });
 
-test("totali (merce + spedizione, IVA esclusa)", () => {
+test("totali (merce + spedizione)", () => {
   assert.equal(calcolaRiepilogo("sagoma", 100).totaleCent, 19600);
   assert.equal(calcolaRiepilogo("sagoma", 200).totaleCent, 32000);
   assert.equal(calcolaRiepilogo("sagoma", 500).totaleCent, 65000);
@@ -47,6 +47,6 @@ test("formattazione italiana", () => {
   assert.equal(n(formatEuro(190)), "1,90 €");
   assert.equal(n(formatEuro(19000)), "190 €");
   assert.equal(n(formatEuro(600)), "6 €");
-  assert.equal(n(conIva(130)), "1,30 € + IVA");
-  assert.equal(n(conIva(prezzoDa(trovaModello("rotante")!))), "1,90 € + IVA");
+  assert.equal(n(prezzoTesto(130)), "1,30 €"); // senza suffisso IVA
+  assert.equal(n(prezzoTesto(prezzoDa(trovaModello("rotante")!))), "1,90 €");
 });

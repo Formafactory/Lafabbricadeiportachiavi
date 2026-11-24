@@ -1,12 +1,12 @@
 /**
- * CONFIGURAZIONE UNICA — listino, spedizione, consegna, testo IVA, contatti.
+ * CONFIGURAZIONE UNICA — listino, spedizione, consegna, suffisso IVA, contatti.
  *
  * Questo file è l'UNICA fonte per prezzi e testi commerciali: lo leggono sia la
  * pagina sia (dal passo 2) le funzioni lato server che ricalcolano il totale.
  * Tutti gli importi sono in centesimi di euro (interi) per evitare errori di
  * arrotondamento.
  *
- * Listino ufficiale: prezzi al pezzo, IVA esclusa.
+ * Listino ufficiale: prezzi al pezzo.
  */
 
 export const QUANTITA = [100, 200, 500] as const;
@@ -19,7 +19,7 @@ export interface Modello {
   nome: string; // titolo della card e voce del modulo
   nomeRiepilogo: string; // "200 portachiavi <nomeRiepilogo>"
   descrizione: string;
-  /** prezzo al pezzo in centesimi, IVA esclusa, per ogni quantità */
+  /** prezzo al pezzo in centesimi, per ogni quantità */
   prezzi: Record<Quantita, number>;
 }
 
@@ -69,13 +69,13 @@ export const CONSEGNA = {
 };
 
 /**
- * TESTO SULL'IVA — da confermare con il commercialista.
- * Oggi si fattura in regime forfettario (senza IVA): quando la conferma arriva
- * basta cambiare qui `suffisso` / `nota`, la pagina e le email si aggiornano.
+ * IVA: oggi NESSUN suffisso. Si fattura in regime forfettario, quindi i prezzi
+ * sono mostrati senza "+ IVA". Se in futuro serve di nuovo, basta mettere
+ * suffisso: "+\u00A0IVA" (spazio non divisibile: non va a capo): lo aggiungono da soli
+ * tutti i prezzi e i totali della pagina e, dal passo 2, delle email.
  */
 export const IVA = {
-  suffisso: "+\u00A0IVA", // (spazio non divisibile: non va a capo) accodato a ogni prezzo/totale: "da 1,30 € + IVA"
-  nota: "Prezzi IVA esclusa.", // se serve una nota estesa vicino ai totali
+  suffisso: "",
 };
 
 /** Limiti del modulo (usati anche dal server dal passo 2). */
@@ -118,7 +118,7 @@ export interface Riepilogo {
   unitarioCent: number;
   merceCent: number;
   spedizioneCent: number;
-  totaleCent: number; // merce + spedizione, IVA esclusa
+  totaleCent: number; // merce + spedizione
 }
 
 export function calcolaRiepilogo(modelloId: string, quantita: number): Riepilogo {
@@ -153,4 +153,6 @@ export function formatEuro(cent: number): string {
   return `${s}\u00A0€`;
 }
 
-export const conIva = (cent: number) => `${formatEuro(cent)}\u00A0${IVA.suffisso}`;
+/** Importo come lo vede il cliente: "190 €", oppure "190 € + IVA" se IVA.suffisso è valorizzato. */
+export const prezzoTesto = (cent: number) =>
+  IVA.suffisso ? `${formatEuro(cent)}\u00A0${IVA.suffisso}` : formatEuro(cent);

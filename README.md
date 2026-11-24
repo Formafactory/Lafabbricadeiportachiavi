@@ -32,8 +32,8 @@ Il progetto usa npm: non committare `bun.lock`/`bun.lockb` (Cloudflare scegliere
 
 ## Dove si cambiano le cose
 
-- **Prezzi, spedizione, consegna, testo IVA, contatti, limiti file:** solo `shared/config.ts`.
-  Il testo sull'IVA (`IVA.suffisso`) è da confermare con il commercialista: si cambia in quel punto solo.
+- **Prezzi, spedizione, consegna, suffisso IVA, contatti, limiti file:** solo `shared/config.ts`.
+  I prezzi sono mostrati senza IVA (regime forfettario). Per rimettere "+ IVA" basta valorizzare `IVA.suffisso`.
 - **Segnaposto da sostituire** (punto 11 del brief): foto (`FOTO` in `src/App.tsx`), partita IVA e
   contatti (`CONTATTI` in config), colori filamento (campo "Colori"), testi di Privacy e Cookie
   (`privacy.html`, `cookie.html`).

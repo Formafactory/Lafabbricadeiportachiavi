@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import {
-  CONSEGNA, CONTATTI, IVA, LIMITI, MODELLI, OLTRE_MASSIMO, QUANTITA, SITO,
-  calcolaRiepilogo, conIva, formatEuro, prezzoDa,
+  CONSEGNA, CONTATTI, LIMITI, MODELLI, OLTRE_MASSIMO, QUANTITA, SITO,
+  calcolaRiepilogo, prezzoTesto, formatEuro, prezzoDa,
   type ModelloId, type Quantita,
 } from "../shared/config.ts";
 import { Illustrazione } from "./illustrations.tsx";
@@ -105,7 +105,7 @@ export default function App() {
             })}
           </div>
           <a className="btn btn-rosa" href="#ordina">
-            <span>Ordina {hero.quantita} portachiavi a {conIva(hero.merceCent)}</span>
+            <span>Ordina {hero.quantita} portachiavi a {prezzoTesto(hero.merceCent)}</span>
             {FRECCIA}
           </a>
           <span className="hero-nota">Anello incluso · bozza 3D gratuita</span>
@@ -167,7 +167,7 @@ export default function App() {
               <span className="card-img"><Illustrazione id={m.id} /></span>
               <strong>{m.nome}</strong>
               <span className="d">{m.descrizione}</span>
-              <span className="prezzo">da {conIva(prezzoDa(m))}</span>
+              <span className="prezzo">da {prezzoTesto(prezzoDa(m))}</span>
             </button>
           ))}
         </div>
@@ -247,7 +247,7 @@ export default function App() {
             <div className="riga"><span>{r.quantita} portachiavi {r.modello.nomeRiepilogo}</span><span>{formatEuro(r.unitarioCent)} l'uno</span></div>
             <div className="riga"><span>Bozza 3D</span><span>gratuita</span></div>
             <div className="riga"><span>Spedizione</span><span>{r.spedizioneCent > 0 ? formatEuro(r.spedizioneCent) : "inclusa"}</span></div>
-            <div className="totale"><span className="l">Totale</span><span className="v">{conIva(r.totaleCent)}</span></div>
+            <div className="totale"><span className="l">Totale</span><span className="v">{prezzoTesto(r.totaleCent)}</span></div>
             <span className="nota">La produzione parte solo dopo che hai approvato la bozza. Consegna in {CONSEGNA.testo}.</span>
           </aside>
         </div>
